@@ -1,0 +1,16 @@
+#root {
+    height: 100dvh;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+}
+* {
+    margin: 0;
+}
+
+nav, header {
+    padding: 0.25rem;
+}
+nav {
+    display: flex;
+    gap: 1em;
+}
