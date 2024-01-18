@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - forelesning02/*
+      - lecture/*
 
 jobs:
   publish:
