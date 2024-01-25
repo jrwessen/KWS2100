@@ -2,8 +2,8 @@ on:
   push:
     branches:
       - main
-      - KWS2100
-      - lecture/03
+      - lecture/*
+      - exercise/*
 
 jobs:
   publish:
