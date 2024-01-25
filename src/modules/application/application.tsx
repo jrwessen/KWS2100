@@ -11,6 +11,7 @@ import { Layer } from "ol/layer";
 
 useGeographic();
 
+//TO show map
 const map = new Map({
     layers: [new TileLayer({ source: new OSM() })],
     view: new View({center: [10,59], zoom: 8}),
@@ -23,7 +24,15 @@ export function Application() {
         map.setTarget(mapRef.current);
     },[]);
 
-    return <div ref={mapRef}></div>;
-
+    return (
+        <>
+        <header>
+            <h1>Kommune kart</h1>
+        </header>
+        <nav>
+            <a href={"#"}>Focus on me</a>
+        </nav>
+        <div ref={mapRef}></div>;
+        </>);
 
 }
