@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - main
-      - KWS2100
+      - KWS2100/*
       
 jobs:
   publish:
