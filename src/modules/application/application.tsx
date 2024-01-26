@@ -1,13 +1,12 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
-import { Map, View } from "ol";
+import React, {MutableRefObject, useEffect, useRef} from "react";
+import {Map, View} from "ol";
 import TileLayer from "ol/layer/Tile";
-import { OSM } from "ol/source";
-import { useGeographic } from "ol/proj";
+import {OSM} from "ol/source";
+import {useGeographic} from "ol/proj";
 
 import "./application.css";
 import "ol/ol.css";
-import { KommuneLayerCheckbox } from "../kommune/kommuneLayerCheckbox";
-import { Layer } from "ol/layer";
+import {KommuneLayerCheckbox} from "../kommune/kommuneLayerCheckbox";
 
 useGeographic();
 
@@ -18,6 +17,17 @@ const map = new Map({
 });
 
 export function Application() {
+
+    function handleFocusUser(e : React.MouseEvent){
+        e.preventDefault(); //For it not togenerate url
+        navigator.geolocation.getCurrentPosition(position => {
+            const{latitude, longitude } = position.coords;
+            map.getView().animate({
+                center: [longitude, latitude], zoom:10,
+            });
+        });
+
+    }
 
     const mapRef = useRef() as MutableRefObject<HTMLDivElement>;
     useEffect(() => {
@@ -30,7 +40,8 @@ export function Application() {
             <h1>Kommune kart</h1>
         </header>
         <nav>
-            <a href={"#"}>Focus on me</a>
+            <a href={"#"} onClick={handleFocusUser}>Focus on me</a>
+            <KommuneLayerCheckbox />
         </nav>
         <div ref={mapRef}></div>;
         </>);
