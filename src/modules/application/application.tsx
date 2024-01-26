@@ -1,9 +1,10 @@
 import React, {MutableRefObject, useEffect, useRef, useState} from "react";
+
 import {Map, View} from "ol";
 import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
 import {useGeographic} from "ol/proj";
-
+import { Layer } from "ol/layer";
 import "./application.css";
 import "ol/ol.css";
 import {KommuneLayerCheckbox} from "../kommune/kommuneLayerCheckbox";
@@ -28,12 +29,12 @@ export function Application() {
         });
     }
 
-    const[layers, setLayers] = useState(new TileLayer({ source: new OSM}))
+    const[layers, setLayers] = useState<Layer[]>([
+        new TileLayer({ source: new OSM})
+    ]);
     const mapRef = useRef() as MutableRefObject<HTMLDivElement>;
-    useEffect(() => {
-        map.setTarget(mapRef.current);
-    },[]);
-
+    useEffect(() => map.setTarget(mapRef.current) ,[]);
+    useEffect(() => map.setLayers(layers), [layers]);
     return (
         <>
         <header>
@@ -41,7 +42,7 @@ export function Application() {
         </header>
         <nav>
             <a href={"#"} onClick={handleFocusUser}>Focus on me</a>
-            <KommuneLayerCheckbox />
+            <KommuneLayerCheckbox setLayers = {setLayers}/>
         </nav>
         <div ref={mapRef}></div>;
         </>);
