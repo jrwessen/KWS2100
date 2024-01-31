@@ -10,4 +10,18 @@
 nav {
     display: flex;
     gap: 1rem;
+
+}
+
+.kommune-overlay{
+
+    background-color: white;
+    padding: 0.5em;
+    translate: -50% calc(-50% - 30px);
+
+
+}
+main {
+    display: grid;
+    grid-template-columns: 1fr auto;
 }

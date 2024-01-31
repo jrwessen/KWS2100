@@ -4,10 +4,11 @@ import {Map, View} from "ol";
 import TileLayer from "ol/layer/Tile";
 import {OSM} from "ol/source";
 import {useGeographic} from "ol/proj";
-import { Layer } from "ol/layer";
+import {Layer} from "ol/layer";
 import "./application.css";
 import "ol/ol.css";
 import {KommuneLayerCheckbox} from "../kommune/kommuneLayerCheckbox";
+import {KommuneAside} from "../kommune/kommuneAside";
 
 useGeographic();
 
@@ -37,14 +38,17 @@ export function Application() {
     useEffect(() => map.setLayers(layers), [layers]);
     return (
         <>
-        <header>
-            <h1>Kommune kart</h1>
-        </header>
-        <nav>
-            <a href={"#"} onClick={handleFocusUser}>Focus on me</a>
-            <KommuneLayerCheckbox map={map} setLayers = {setLayers}/>
-        </nav>
-        <div ref={mapRef}></div>;
+            <header>
+                <h1>Kommune kart</h1>
+            </header>
+            <nav>
+                <a href={"#"} onClick={handleFocusUser}>Focus on me</a>
+                <KommuneLayerCheckbox map={map} setLayers={setLayers}/>
+            </nav>
+            <main>
+                <div ref={mapRef}></div>
+
+            </main>
         </>);
 
 }

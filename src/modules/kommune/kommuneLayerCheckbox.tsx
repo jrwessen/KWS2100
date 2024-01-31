@@ -45,6 +45,15 @@ export function KommuneLayerCheckbox({
 }) {
     const [checked, setChecked] = useState(false);
     const overlay = useMemo(() => new Overlay({}), []);
+    const overlayRef = useRef() as MutableRefObject<HTMLDivElement>;
+    useEffect(() => {
+        overlay.setElement(overlayRef.current);
+        map.addOverlay(overlay);
+        return () => {
+            map.removeOverlay(overlay);
+        };
+    }, []);
+    //viser selected kommune
     const [selectedKommune, setSelectedKommune] = useState<
         KommuneFeature | undefined
     >();
@@ -57,15 +66,15 @@ export function KommuneLayerCheckbox({
 
         if (clickedKommune.length === 1) {
             const properties = clickedKommune[0].getProperties() as KommuneProperties;
-            alert(properties.navn.find( (n) => n.sprak === "nor")!.navn);
             setSelectedKommune(clickedKommune[0]);
             overlay.setPosition(e.coordinate);
         } else {
             setSelectedKommune(undefined);
             overlay.setPosition(undefined);
         }
-
     }
+
+
 
     useEffect(() => {
         if(checked){
@@ -78,14 +87,27 @@ export function KommuneLayerCheckbox({
         };
     }, [checked]);
 
-    return <>
+    return (
     <div>
         <label>
-            <input type={"checkbox"} checked={checked} onChange={(e) => setChecked(e.target.checked)}/>
-            {checked ? "Hide ":"Show "}
-            kommune
+            <input
+                type={"checkbox"}
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+            />
+            {checked ? "Hide ":"Show "} kommune layer
         </label>
+        <div  ref={overlayRef} className = {"kommune-overlay"}>
+            {selectedKommune && (
+                <>
+                    {
+                        (selectedKommune.getProperties() as KommuneProperties).navn.find(
+                            (n) => n.sprak === "nor",
+                        )!.navn
+                    }
+                </>
+                )}
+        </div>
     </div>
-        </>
-
-}
+        );
+    }
