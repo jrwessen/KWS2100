@@ -25,5 +25,5 @@ export function MapApplication() {
     useEffect(() => {
         map.setTarget(mapRef.current);
     }, []);
-    return <div ref={mapRef}></div>;
+    return <div ref={mapRef}>test</div>;
 }
