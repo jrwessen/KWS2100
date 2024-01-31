@@ -1,11 +1,12 @@
 import React, {
-    Dispatch, MouseEvent,
-    MutableRefObject,
-    SetStateAction,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
+  Dispatch,
+  MouseEvent,
+  MutableRefObject,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from "react";
 import { Layer } from "ol/layer";
 import VectorLayer from "ol/layer/Vector";
@@ -14,100 +15,95 @@ import { GeoJSON } from "ol/format";
 import { Feature, Map, MapBrowserEvent, Overlay } from "ol";
 import { Polygon } from "ol/geom";
 
-
 type KommuneProperties = {
-    kommunenummer: string;
-    navn: {
-        sprak: string;
-        navn: string;
-    }[];
+  kommunenummer: string;
+  navn: {
+    sprak: string;
+    navn: string;
+  }[];
 };
 
 type KommuneFeature = Feature<Polygon> & {
-    getProperties(): KommuneProperties;
+  getProperties(): KommuneProperties;
 };
 
-
 const kommuneSource = new VectorSource<KommuneFeature>({
-    url: "/kommuner.json",
-    format: new GeoJSON(),
+  url: "/kommuner.json",
+  format: new GeoJSON(),
 });
 
 const kommuneLayer = new VectorLayer({
-    source: kommuneSource,
+  source: kommuneSource,
 });
 export function KommuneLayerCheckbox({
-    map,
-    setLayers,
-}:{
-    map: Map;
-    setLayers: Dispatch<SetStateAction<Layer[]>>;
+  map,
+  setLayers,
+}: {
+  map: Map;
+  setLayers: Dispatch<SetStateAction<Layer[]>>;
 }) {
-    const [checked, setChecked] = useState(false);
-    const overlay = useMemo(() => new Overlay({}), []);
-    const overlayRef = useRef() as MutableRefObject<HTMLDivElement>;
-    useEffect(() => {
-        overlay.setElement(overlayRef.current);
-        map.addOverlay(overlay);
-        return () => {
-            map.removeOverlay(overlay);
-        };
-    }, []);
-    //viser selected kommune
-    const [selectedKommune, setSelectedKommune] = useState<
-        KommuneFeature | undefined
-    >();
-    // @ts-ignore
-    function handleClick(e: MapBrowserEvent<MouseEvent>) {
+  const [checked, setChecked] = useState(false);
+  const overlay = useMemo(() => new Overlay({}), []);
+  const overlayRef = useRef() as MutableRefObject<HTMLDivElement>;
+  useEffect(() => {
+    overlay.setElement(overlayRef.current);
+    map.addOverlay(overlay);
+    return () => {
+      map.removeOverlay(overlay);
+    };
+  }, []);
+  //viser selected kommune
+  const [selectedKommune, setSelectedKommune] = useState<
+    KommuneFeature | undefined
+  >();
+  // @ts-ignore
+  function handleClick(e: MapBrowserEvent<MouseEvent>) {
+    const clickedKommune = kommuneSource.getFeaturesAtCoordinate(
+      e.coordinate,
+    ) as KommuneFeature[];
 
-        const clickedKommune = kommuneSource.getFeaturesAtCoordinate(
-            e.coordinate,
-        ) as KommuneFeature[];
-
-        if (clickedKommune.length === 1) {
-            const properties = clickedKommune[0].getProperties() as KommuneProperties;
-            setSelectedKommune(clickedKommune[0]);
-            overlay.setPosition(e.coordinate);
-        } else {
-            setSelectedKommune(undefined);
-            overlay.setPosition(undefined);
-        }
+    if (clickedKommune.length === 1) {
+      const properties = clickedKommune[0].getProperties() as KommuneProperties;
+      setSelectedKommune(clickedKommune[0]);
+      overlay.setPosition(e.coordinate);
+    } else {
+      setSelectedKommune(undefined);
+      overlay.setPosition(undefined);
     }
+  }
 
+  useEffect(() => {
+    if (checked) {
+      setLayers((old) => [...old, kommuneLayer]);
+      map.on("click", handleClick);
+    }
+    return () => {
+      map.un("click", handleClick);
+      setLayers((old) => old.filter((l) => l !== kommuneLayer));
+    };
+  }, [checked]);
 
-
-    useEffect(() => {
-        if(checked){
-            setLayers((old) => [... old, kommuneLayer]);
-            map.on("click", handleClick);
-        }
-        return () => {
-            map.un("click", handleClick);
-            setLayers((old) => old.filter((l) => l !== kommuneLayer ));
-        };
-    }, [checked]);
-
-    return (
+  return (
     <div>
-        <label>
-            <input
-                type={"checkbox"}
-                checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
-            />
-            {checked ? "Hide ":"Show "} kommune layer
-        </label>
-        <div  ref={overlayRef} className = {"kommune-overlay"}>
-            {selectedKommune && (
-                <>
-                    {
-                        (selectedKommune.getProperties() as KommuneProperties).navn.find(
-                            (n) => n.sprak === "nor",
-                        )!.navn
-                    }
-                </>
-                )}
-        </div>
+      <label>
+        <input
+          type={"checkbox"}
+          checked={checked}
+          onChange={(e) => setChecked(e.target.checked)}
+        />
+        {checked ? "Hide " : "Show "} kommune layer
+      </label>
+      <div ref={overlayRef} className={"kommune-overlay"}>
+        {selectedKommune && (
+          <>
+            {
+              (selectedKommune.getProperties() as KommuneProperties).navn.find(
+                (n) => n.sprak === "nor",
+              )!.navn
+            }
+          </>
+        )}
+      </div>
     </div>
-        );
-    }
+  );
+}

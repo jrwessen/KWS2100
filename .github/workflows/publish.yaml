@@ -28,4 +28,3 @@ jobs:
           branch: lecture/*
           folder: ./KWS2100/KWS2100
         id: deployment
-
