@@ -1,5 +1,5 @@
 // vite.config.js
 export default {
-    // config options
-    base: "/KWS2100"
-}
+  // config options
+  base: "/KWS2100",
+};
