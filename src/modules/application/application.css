@@ -1,10 +1,9 @@
-
 * {
-    margin: unset;
+  margin: unset;
 }
 
 #root {
-    display: grid;
-    grid-template-rows: auto auto 1fr;
-    height: 100dvh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  height: 100dvh;
 }
