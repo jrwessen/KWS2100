@@ -28,7 +28,7 @@ export function MapApplication() {
   return (
     <>
       <header>
-        <h1>Kommune kart</h1>
+        <h1>Kommune kart tester</h1>
       </header>
       <nav>
         <a href={"#"} onClick={handleFocusUser}>
