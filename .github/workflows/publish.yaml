@@ -25,6 +25,6 @@ jobs:
       - uses: actions/deploy-pages@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: lecture/*
-          folder: ./KWS2100/KWS2100
+          branch: master
+          folder: ./KWS2100
         id: deployment
