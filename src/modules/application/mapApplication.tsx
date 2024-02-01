@@ -8,7 +8,7 @@ import "ol/ol.css"
 import "./application.css";
 
 
-
+//Tell it to use geographic coordinate. Longitude and latitude
 useGeographic();
 
 const map = new Map({
@@ -22,8 +22,17 @@ const map = new Map({
 
 export function MapApplication() {
     const mapRef = useRef() as MutableRefObject<HTMLDivElement>;
-    useEffect(() => {
-        map.setTarget(mapRef.current);
-    }, []);
-    return <div ref={mapRef}>test</div>;
+    //To display the map
+    useEffect(() => map.setTarget(mapRef.current), []);
+    return (
+        <>
+            <header>
+                <h1>Kommune kart</h1></header>
+            <nav>
+                <a href={"#"}>Focus on me</a>
+            </nav>
+
+            <div ref={mapRef}></div>
+        </>
+        );
 }
