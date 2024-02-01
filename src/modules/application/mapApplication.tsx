@@ -28,7 +28,7 @@ export function MapApplication() {
   return (
     <>
       <header>
-        <h1>Skal prøve å push diss i riktig sted</h1>
+        <h1>Skal prøve å push diss i riktig stedK</h1>
       </header>
       <nav>
         <a href={"#"} onClick={handleFocusUser}>
