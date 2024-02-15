@@ -1,7 +1,8 @@
 on:
   push:
     branches:
-      - master
+      - KWS2100
+      - exercise03
 
 jobs:
   publish:
