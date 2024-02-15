@@ -5,10 +5,10 @@ name: Node.js CI
 
 on:
   push:
-    branches: ["exercise05","master"]
+    branches: ["exercise05"]
 
   pull_request:
-    branches: ["exercise05","master"]
+    branches: ["exercise05"]
 
 permissions:
   contents: read
