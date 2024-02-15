@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - exercise05
 
 jobs:
   publish:
